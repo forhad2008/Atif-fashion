@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATIF FASHION | Premium Store</title>
+    <style>
+        /* --- RESET & BASE STYLES --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #12456e;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            background: #1f5368;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+
+        .menu-icon {
+            font-size: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .menu-icon:hover {
+            color: #b9c08d;
+        }
+
+        /* --- FILTERS & SLIDER --- */
+        .filters {
+            display: flex;
+            gap: 10px;
+            padding: 10px 15px;
+        }
+
+        .filter-input {
+            flex: 1;
+            height: 40px;
+            background: #0c0f11;
+            border-radius: 10px;
+            border: none;
+            padding: 0 15px;
+            color: white;
+            outline: none;
+        }
+
+        .slider {
+            margin: 10px 15px;
+            height: 120px;
+            background: #b9c08d;
+            border-radius: 25px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .slider-bar {
+            width: 50px;
+            height: 4px;
+            background: white;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        /* --- PRODUCT GRID --- */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            padding: 15px;
+        }
+
+        .card {
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            /* Space inside the card */
+            cursor: pointer;
+            transition: transform 0.2s;
+            position: relative;
+            overflow: hidden;
+            /* Keeps image inside rounded corners */
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        /* THE FIX: Ensure image shows 100% without cropping */
+        .card img {
+            max-width: 100%;
+            max-height: 100%;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* Shows full image within the box */
+        }
+
+        /* CARD COLORS & SIZES */
+        .light {
+            background: #e5e5e5;
+        }
+
+        .green {
+            background: #b6d0a6;
+        }
+
+        .blue {
+            background: #a8c0d0;
+        }
+
+        .dark {
+            background: #333;
+        }
+
+        .green2 {
+            background: #0a5c32;
+        }
+
+        .small {
+            height: 130px;
+        }
+
+        .large {
+            grid-column: span 2;
+            height: 130px;
+        }
+
+        /* --- SIDEBAR MENU --- */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background: #0c0f11;
+            z-index: 1000;
+            transition: 0.4s;
+            padding: 40px 20px;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .close-btn {
+            font-size: 30px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            list-style: none;
+            margin-top: 40px;
+        }
+
+        .nav-links li {
+            padding: 15px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        /* --- MODAL --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            color: #333;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 30px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Modal Image fix */
+        #modalImg {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            margin-bottom: 20px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        /* --- CONTACT SECTION --- */
+        .contact {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .btn3d {
+            position: relative;
+            width: 120px;
+            height: 40px;
+            transform: rotate(-5deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn3d:active {
+            transform: translateY(4px) rotate(-5deg);
+        }
+
+        .facebook {
+            background: #2f5ec4;
+        }
+
+        .whatsapp {
+            background: #179b45;
+        }
+footer{
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar" id="sidebar">
+        <div class="close-btn" onclick="toggleMenu()">&times;</div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Our Collection</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </div>
+
+    <div class="header">
+        <div class="logo">ATIF FASHION</div>
+        <div class="menu-icon" onclick="toggleMenu()">≡</div>
+    </div>
+
+    <div class="filters">
+        <input type="text" id="mainSearch" class="filter-input" placeholder="Search products..."
+            onkeyup="filterProducts()">
+    </div>
+
+    <div class="slider">
+        <div class="slider-bar"></div>
+    </div>
+
+    <div class="products" id="productGrid">
+        <div class="card light small" onclick="openModal('Classic Cap', '$25', 'cap.png')">
+            <img src="cap.png" alt="cap">
+        </div>
+        <div class="card green small" onclick="openModal('Summer Shirt', '$45', 'shirt.png')">
+            <img src="shirt.png" alt="shirt">
+        </div>
+        <div class="card green small" onclick="openModal('Pro Helmet', '$85', 'helmet.png')">
+            <img src="helmet.png" alt="helmet">
+        </div>
+        <div class="card dark large" onclick="openModal('Design Notebook', '$15', 'notebook.png')">
+            <img src="notebook.png" alt="notebook">
+        </div>
+        <div class="card blue small" onclick="openModal('Member Card', '$5', 'card.png')">
+            <img src="card.png" alt="card">
+        </div>
+        <div class="card green small" onclick="openModal('Urban Hoodie', '$60', 'hoodie.png')">
+            <img src="hoodie.png" alt="hoodie">
+        </div>
+        <div class="card dark small" onclick="openModal('Signature Scent', '$110', 'perfume.png')">
+            <img src="perfume.png" alt="perfume">
+        </div>
+        <div class="card green2 small" onclick="openModal('Eco Bag', '$35', 'bag.png')">
+            <img src="bag.png" alt="bag">
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <img id="modalImg" src="" alt="Product">
+            <h2 id="modalTitle">Product Name</h2>
+            <p id="modalPrice" style="font-weight: bold; color: #179b45; font-size: 22px; margin-top: 10px;"></p>
+            <p style="margin: 15px 0; font-size: 14px; color: #666;">
+                Premium quality item crafted for style and durability. Perfect for your daily fashion needs.
+            </p>
+            <button
+                style="margin-top: 10px; padding: 12px 30px; background: #5f681f; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%;">
+               Buy From Online
+            </button>
+        </div>
+    </div>
+
+    <div class="contact">
+        <h3>Join our community</h3>
+        <div class="contact-buttons">
+            <div class="btn3d facebook"><span>facebook</span></div>
+            <div class="btn3d whatsapp"><span>whatsapp</span></div>
+        </div>
+    </div>
+    <footer>
+        Made By- Abdullah Forhad
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        function openModal(title, price, img) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalPrice').innerText = price;
+            document.getElementById('modalImg').src = img;
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            let modal = document.getElementById('modalOverlay');
+            if (event.target == modal) { closeModal(); }
+        }
+
+        function filterProducts() {
+            let input = document.getElementById('mainSearch').value.toLowerCase();
+            let cards = document.getElementsByClassName('card');
+            for (let i = 0; i < cards.length; i++) {
+                let imgAlt = cards[i].getElementsByTagName('img')[0].alt;
+                cards[i].style.display = imgAlt.toLowerCase().includes(input) ? "" : "none";
+            }
+        }
+    </script>
+</body>
+
+</html>
